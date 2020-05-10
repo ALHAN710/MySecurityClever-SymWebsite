@@ -1,0 +1,669 @@
+{%	extends 'base.html.twig' %}
+
+{% block title	%}
+	Home
+{%	endblock	%}
+
+{% block stylesheet	%}
+	<script>
+		var $urlUpdateState = "{{ path('security_state') }}";
+		{%	set state = security.activation ? 1 : 0 %}
+		var houseSecurityState = {{ state }};
+		console.log('House security state : ' + houseSecurityState);
+	</script>
+{% endblock	%}
+
+{%	block body	%}
+	
+	<div class="row">
+		<div class="col-sm-12">
+			<div
+				class="card p-2 mb-4 text-center h3">
+				<!-- <img src="assets/images/symbiot4.svg" width="140" height="20" alt="SYMBIOT 4" class="mx-auto"> -->
+				My Security CLEVER
+			</div>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-sm-12 col-md-12">
+
+			<!-- Security system START -->
+			{%	set state = security.activation ? 1 : 0 %}
+			<div class="card lock {% if security.activation == 1 %} active {% endif %}" data-unit="switch-house-lock" data-entry-securityvalue= {{ state }}>
+				<div class="card-body d-flex flex-wrap">
+					<svg class="icon-sprite icon-2x">
+						<use xlink:href="/images/icons-sprite.svg#home"/>
+						<use class="subicon-unlocked" xlink:href="/images/icons-sprite.svg#subicon-unlocked"/>
+						<use class="subicon-locked" xlink:href="/images/icons-sprite.svg#subicon-locked"/>
+					</svg>
+					<div class="title-status">
+						<h4>Security system</h4>
+						<p class="status">
+							<span class="arm"></span>
+						</p>
+					</div>
+					<label class="switch ml-auto ">
+						<input type="checkbox" id="switch-house-lock">
+					</label>
+				</div>
+			</div>
+			
+			<!-- Security system END -->
+
+		</div>
+
+	</div>
+
+	<div class="row">
+		
+		<!-- 
+			<div
+			class="col-sm-12 col-md-6 col-xl-4">
+			-- Interior lights  START --
+			<div class="card" data-unit-group="switch-lights">
+			<div class="card-body">
+			<h3 class="card-title">Lights - interior</h3>
+			</div>
+			<ul class="list-group list-group-flush">
+			<li class="list-group-item d-flex active" data-unit="switch-light-1">
+			<svg class="icon-sprite">
+			<use class="glow" fill="url(#radial-glow)" xlink:href="assets/images/icons-sprite.svg#glow"/>
+			<use xlink:href="assets/images/icons-sprite.svg#bulb-eco"/>
+			</svg>
+			<h5>Kitchen</h5>
+			<label class="switch ml-auto checked">
+			<input type="checkbox" id="switch-light-1" checked>
+			</label>
+			<div class="info-holder info-rb" style="right:40px;">
+			<div data-toggle="popover-all" data-content="Checkbox element using localStorage to remember the last status." data-original-title="Switch ON/OFF" data-container="body" data-placement="top" data-offset="0,-6"></div>
+			</div>
+			</li>
+			<li class="list-group-item d-flex" data-unit="switch-light-2">
+			<svg class="icon-sprite">
+			<use class="glow" fill="url(#radial-glow)" xlink:href="assets/images/icons-sprite.svg#glow"/>
+			<use xlink:href="assets/images/icons-sprite.svg#bulb-eco"/>
+			</svg>
+			<h5>Dining room</h5>
+			<label class="switch ml-auto">
+			<input type="checkbox" id="switch-light-2">
+			</label>
+			</li>
+			<li class="list-group-item d-flex" data-unit="switch-light-3">
+			<svg class="icon-sprite">
+			<use class="glow" fill="url(#radial-glow)" xlink:href="assets/images/icons-sprite.svg#glow"/>
+			<use xlink:href="assets/images/icons-sprite.svg#bulb-eco"/>
+			</svg>
+			<h5>Living room</h5>
+			<label class="switch ml-auto">
+			<input type="checkbox" id="switch-light-3">
+			</label>
+			</li>
+			<li class="list-group-item d-flex" data-unit="switch-light-4">
+			<svg class="icon-sprite">
+			<use class="glow" fill="url(#radial-glow)" xlink:href="assets/images/icons-sprite.svg#glow"/>
+			<use xlink:href="assets/images/icons-sprite.svg#bulb-eco"/>
+			</svg>
+			<h5>Bedroom</h5>
+			<label class="switch ml-auto">
+			<input type="checkbox" id="switch-light-4">
+			</label>
+			</li>
+			<li class="list-group-item d-flex" data-unit="switch-light-5">
+			<svg class="icon-sprite">
+			<use class="glow" fill="url(#radial-glow)" xlink:href="assets/images/icons-sprite.svg#glow"/>
+			<use xlink:href="assets/images/icons-sprite.svg#bulb-eco"/>
+			</svg>
+			<h5>Bathroom</h5>
+			<label class="switch ml-auto">
+			<input type="checkbox" id="switch-light-5">
+			</label>
+			</li>
+			</ul>
+			<div class="card-body">
+			<div class="lights-controls" data-controls="switch-lights">
+			<button data-action="all-on" type="button" class="btn btn-primary lights-control">All
+			<strong>ON</strong>
+			</button>
+			<button data-action="all-off" type="button" class="btn btn-secondary lights-control">All
+			<strong>OFF</strong>
+			</button>
+			</div>
+			</div>
+			</div>
+
+			-- Interior lights  END --
+			</div>
+
+			<div class="col-sm-12 col-md-6 col-xl-4">
+			-- Exterior lights  START --
+			<h3 class="card-title my-3">Lights - exterior</h3>
+			<div class="card" data-unit="switch-light-6">
+			<div class="card-body d-flex flex-row justify-content-start">
+			<svg class="icon-sprite">
+			<use class="glow" fill="url(#radial-glow)" xlink:href="assets/images/icons-sprite.svg#glow"/>
+			<use xlink:href="assets/images/icons-sprite.svg#bulb-eco"/>
+			</svg>
+			<h5>Front doors</h5>
+			<label class="switch ml-auto">
+			<input type="checkbox" id="switch-light-6">
+			</label>
+			</div>
+			</div>
+			<div class="card" data-unit="switch-light-7">
+			<div class="card-body d-flex">
+			<svg class="icon-sprite">
+			<use class="glow" fill="url(#radial-glow)" xlink:href="assets/images/icons-sprite.svg#glow"/>
+			<use xlink:href="assets/images/icons-sprite.svg#bulb-eco"/>
+			</svg>
+			<h5>Back doors</h5>
+			<label class="switch ml-auto">
+			<input type="checkbox" id="switch-light-7">
+			</label>
+			</div>
+			</div>
+			<div class="card" data-unit="switch-light-8">
+			<div class="card-body d-flex">
+			<svg class="icon-sprite">
+			<use class="glow" fill="url(#radial-glow)" xlink:href="assets/images/icons-sprite.svg#glow"/>
+			<use xlink:href="assets/images/icons-sprite.svg#bulb-eco"/>
+			</svg>
+			<h5>Pool</h5>
+			<label class="switch ml-auto">
+			<input type="checkbox" id="switch-light-8">
+			</label>
+			</div>
+			</div>
+			<div class="card" data-unit="switch-light-9">
+			<div class="card-body d-flex">
+			<svg class="icon-sprite">
+			<use class="glow" fill="url(#radial-glow)" xlink:href="assets/images/icons-sprite.svg#glow"/>
+			<use xlink:href="assets/images/icons-sprite.svg#bulb-eco"/>
+			</svg>
+			<h5>Garage</h5>
+			<label class="switch ml-auto">
+			<input type="checkbox" id="switch-light-9">
+			</label>
+			</div>
+			</div>
+			-- Exterior lights  END --
+			</div>
+		-->
+		
+		{% if devicesNb.NbMotionSensor > 0 %}
+			<div class="col-sm-12 col-md-6 col-xl-4">
+				{# {{dump(devicesNb.NbMotionSensor) }} #}
+				<!-- Motion sensors  START -->
+				<div class="card">
+					<div class="card-body">
+					<h3 class="card-title"><i class="fas fa-walking fa-2x mx-2"></i>
+					Motion sensors</h3>
+						
+					</div>
+
+					<hr class="my-0">
+					
+					{% for motion in devicesTab.Motion %}
+						<!-- {{ motion.name }}  START -->
+						{# {{dump(motion.name)}} #}
+						{%	set state = motion.activation ? 1 : 0 %}
+						
+						<ul class="list-group borderless lock-sensor" data-unit="switch-motion-{{motion.moduleId}}" data-entry-motionid="{{motion.moduleId}}" data-entry-motionvalue= {{ state }}>
+
+
+							<li class="list-group-item d-flex pb-2 ">
+
+								<!-- 
+									<svg class="icon-sprite icon-1x">
+									<use class="glow" fill="url(#radial-glow)" xlink:href="/images/icons-sprite.svg#glow"/>
+									<use xlink:href="/images/icons-sprite.svg#wash-machine"/>
+									</svg>
+									<h5>Washing machine</h5>
+									-- <p class="ml-auto status">ON</p> --
+									<label class="switch ml-auto">
+									<input type="checkbox" id="switch-light-8">
+									</label> 
+								-->						
+								<div class="title-status">
+									<h4>{{ motion.name }}</h4>
+ 
+									<p class="status">
+										<span class="arm"></span>
+									</p>
+								</div>
+
+								<label class="switch ml-auto">
+									<input type="checkbox" id="switch-motion-{{motion.moduleId}}">
+
+								</label>
+
+							</li>
+							
+							<!--<li class="list-group-item d-flex pt-2 pb-2">
+								<p class="entry status">Connected</p>
+								<p class="ml-auto status">OFF</p>
+							</li>
+							-->
+
+						</ul>
+						<!--
+						<ul class="list-group borderless active" data-unit="">
+
+							<li class="list-group-item d-flex pt-2 pb-2">
+								
+								<p class="ml-auto status">
+									Connected								
+								</p>
+							</li>
+
+						</ul> 
+						-->
+					
+						<!-- {{ motion.name }}  END -->
+
+						<hr class="my-0">
+
+					{% endfor %}
+
+				</div>
+				<!-- Motion Sensors  END -->
+
+			</div>
+		{% endif %}
+
+		{% if devicesNb.NbFireSensor > 0 %}
+			
+			<div class="col-sm-12 col-md-6 col-xl-4">
+				{# {{ dump(devicesNb.NbFireSensor) }} #}
+				<!-- Fire sensors  START -->
+				<div class="card">
+					<div class="card-body">
+					<h3 class="card-title"><i class="fas fa-fire-alt fa-2x mx-2"></i>Fire sensors</h3>
+					
+					</div>
+
+					<hr class="my-0">
+					
+					{% for fire in devicesTab.Fire %}
+						<!-- {{ fire.name }}  START -->
+						{# {{dump(fire.name)}} #}
+						{%	set state = fire.activation ? 1 : 0 %}
+						<ul class="list-group borderless lock-sensor" data-unit="switch-fire-{{fire.moduleId}}" data-entry-fireid="{{fire.moduleId}}" data-entry-firevalue= {{ state }}>
+
+							<li class="list-group-item d-flex pb-2 ">					
+								<div class="title-status">
+									<h4>{{ fire.name }}</h4>
+ 
+									<p class="status">
+										<span class="arm"></span>
+									</p>
+								</div>
+
+								<label class="switch ml-auto">
+									<input type="checkbox" id="switch-fire-{{fire.moduleId}}">
+
+								</label>
+
+							</li>
+							
+
+						</ul>
+						<!--
+						<ul class="list-group borderless active" data-unit="">
+
+							<li class="list-group-item d-flex pt-2 pb-2">
+								
+								<p class="ml-auto status">
+									Connected								
+								</p>
+							</li>
+
+						</ul> 
+						-->
+
+						<!-- {{ fire.name }}  END -->
+
+						<hr class="my-0">
+
+					{% endfor %}
+
+				</div>
+				<!-- Fire Sensors  END -->
+
+			</div>
+		{% endif %}
+
+		{% if devicesNb.NbFloodSensor > 0 %}
+			<div class="col-sm-12 col-md-6 col-xl-4">
+				{# {{ dump(devicesNb.NbFloodSensor) }} #}
+				<!-- Flood sensors  START -->
+				<div class="card">
+					<div class="card-body">
+					<h3 class="card-title"><i class="fas fa-water fa-2x mx-2"></i>Flood sensors</h3>
+					
+					</div>
+
+					<hr class="my-0">
+					
+					{% for flood in devicesTab.Flood %}
+						<!-- {{ flood.name }}  START -->
+						{# {{dump(flood.name)}} #}
+						{%	set state = flood.activation ? 1 : 0 %}
+						<ul class="list-group borderless lock-sensor" data-unit="switch-flood-{{flood.moduleId}}" data-entry-floodid="{{flood.moduleId}}" data-entry-floodvalue= {{ state }}>
+
+							<li class="list-group-item d-flex pb-2 ">					
+								<div class="title-status">
+									<h4>{{ flood.name }}</h4>
+ 
+									<p class="status">
+										<span class="arm"></span>
+									</p> 
+								</div>
+
+								<label class="switch ml-auto">
+									<input type="checkbox" id="switch-flood-{{flood.moduleId}}">
+
+								</label>
+
+							</li>
+							
+							<!--<li class="list-group-item d-flex pt-2 pb-2">
+								<p class="entry status">Connected</p>
+								<p class="ml-auto status">OFF</p>
+							</li>
+							-->
+
+						</ul>
+						<!--
+						<ul class="list-group borderless active" data-unit="">
+
+							<li class="list-group-item d-flex pt-2 pb-2">
+								
+								<p class="ml-auto status">
+									Connected								
+								</p>
+							</li>
+
+						</ul> 
+						-->
+					
+						<!-- {{ flood.name }}  END -->
+
+						<hr class="my-0">
+
+					{% endfor %}
+
+				</div>
+				<!-- Flood Sensors  END -->
+
+			</div>
+		{% endif %}
+	</div>
+	
+		<div class="row">
+			{% if devicesNb.NbAlarm > 0 %}
+				<div class="col-sm-12 col-md-6 col-xl-6">
+
+					<!-- Alarms  START -->
+					<div class="card">
+						<div class="card-body">
+							<h3 class="card-title">Alarms</h3>
+						</div>
+
+						<hr class="my-0">
+						{% for alarm in devicesTab.Alarm %}
+
+							<!-- {{ alarm.name }} START -->
+
+							<ul class="list-group borderless active" data-unit="motion-sensors-alarm">
+								<li class="list-group-item d-flex pb-0">
+									<svg class="icon-sprite icon-1x">
+										<use class="glow" fill="url(#radial-glow)" xlink:href="/images/icons-sprite.svg#glow"/>
+										<use xlink:href="/images/icons-sprite.svg#alarm"/>
+									</svg>
+									<h5>{{ alarm.name }}</h5>
+									<!--
+									<p class="ml-auto status">Connected</p>
+									-->
+								</li>
+								
+							</ul>
+
+							<!-- {{ alarm.name }}  END -->
+
+							<hr class="my-0">
+						{% endfor %}
+
+					</div>
+					<!-- Alarms  END -->
+
+				</div>
+			{% endif %}
+
+			{% if devicesNb.NbEmergency > 0 %}
+				<div class="col-sm-12 col-md-6 col-xl-6">
+					<div class="col-sm-12 col-md-6 col-xl-4">
+						{# {{dump(devicesNb.NbEmergency) }} #}
+						<!-- Emergency Buttons  START -->
+						<div class="card">
+							<div class="card-body">
+							<h3 class="card-title"><i class="fas fa-exclamation-triangle fa-2x mx-2"></i>Emergency Buttons</h3>
+								
+							</div>
+
+							<hr class="my-0">
+							
+							{% for emergency in devicesTab.Emergency %}
+								<!-- {{ emergency.name }}  START -->
+								{# {{dump(emergency.name)}} #}
+								<ul class="list-group borderless active lock-sensor" data-unit="switch-wash-machine">
+
+									<li class="list-group-item d-flex pb-2 ">		
+										<div class="title-status">
+											<h4>{{ emergency.name }}</h4>
+		
+											<p class="status">
+												<span class="arm"></span>
+											</p>
+										</div>
+
+										<label class="switch ml-auto">
+											<input type="checkbox" id="switch-wash-machine">
+
+										</label>
+
+									</li>						
+
+								</ul>
+								<!--
+								<ul class="list-group borderless active" data-unit="">
+
+									<li class="list-group-item d-flex pt-2 pb-2">
+										
+										<p class="ml-auto status">
+											Connected								
+										</p>
+									</li>
+
+								</ul> 
+								-->
+							
+								<!-- {{ emergency.name }}  END -->
+
+								<hr class="my-0">
+
+							{% endfor %}
+
+						</div>
+						<!-- Emergency Buttons  END -->
+
+					</div>
+				</div>
+			{% endif %}
+
+		</div>
+		
+	
+	
+	{% if devicesNb.NbCamera > 0 %}
+		<div class="row">
+			{% for camera in devicesTab.Camera %}
+				<div class="col-sm-12 col-md-6">
+					<!-- {{camera.name}}  START -->
+					<div class="card active" data-unit="switch-camera-{{camera.moduleId}}" >
+						<div class="card-img-top card-stream">
+							<div class="embed-responsive embed-responsive-16by9">
+								<video muted loop>
+									<source src="{{camera.streamingUrl}}" type="video/mp4"/>
+									<source src="{{camera.streamingUrl}}" type="video/webm"/>
+								</video>
+								<div class="card-preloader">
+									<div class="center-preloader d-flex align-items-center">
+										<div class="spinners">
+											<div class="spinner01"></div>
+											<div class="spinner02"></div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="card-img-top card-stream off">
+							<div class="embed-responsive embed-responsive-16by9">
+								<h2 class="center-abs">OFF</h2>
+							</div>
+						</div>
+						<div class="card-body d-flex">
+							<svg class="icon-sprite">
+								<use class="glow" fill="url(#radial-glow)" xlink:href="/images/icons-sprite.svg#glow"/>
+								<use xlink:href="/images/icons-sprite.svg#camera"/>
+							</svg>
+							<h5>{{ camera.name }}</h5>
+							<label class="switch ml-auto checked">
+								<input type="checkbox" id="switch-camera-{{camera.moduleId}}" checked>
+							</label>
+						</div>
+					</div>
+					<!-- {{camera.name}}  END -->
+				</div>
+
+			{% endfor %}
+
+		</div>
+	{% endif %}
+	
+	<!-- Demonstration - buttons -->
+	<!--		
+	<br><br>
+	<div class="row">
+		<div class="col-sm-12">
+
+			<button type="button" class="btn btn-primary my-2">PRIMARY</button>
+			<button type="button" class="btn btn-secondary my-2">SECONDARY</button>
+			<button type="button" class="btn btn-lg btn-danger mx-2 my-2" data-toggle="modal" data-target="#alarmModal">
+				Demo ALARM
+			</button>
+			<button type="button" class="btn btn-warning my-2">WARNING</button>
+			<button type="button" class="btn btn-success my-2">SUCCESS</button>
+			<button type="button" class="btn btn-info my-2">INFO</button>
+		</div>
+	</div>
+	-->
+{% endblock %}
+
+{% block javascripts %}
+
+	<!--<script src="/js/iot-timer.js">
+	</script>-->
+
+	<!-- Basic theme functionality (arming, garage doors, switches ...) - using jQuery -->
+	<!-- <script src="/js/iot-functions.min.js">
+	</script> -->
+	<!--<script src="/js/iot-functions.js">
+	</script>-->
+
+	<script>
+		var switchValues = "";
+		// Select elements by their data attribute
+		const $entryMotionIdElements = $('[data-entry-motionid]');
+		// Map over each element and extract the data value
+		const $entryMotionIds =
+			$.map($entryMotionIdElements, item => $(item).data('entryMotionid'));
+		// You'll now have array containing string values
+		//console.log($entryMotionIds); // eg: ["1", "2", "3"]
+		// Select elements by their data attribute
+		const $entryMotionValueElements = $('[data-entry-motionvalue]');
+		// Map over each element and extract the data value
+		const $entryMotionValues =
+			$.map($entryMotionValueElements, item => $(item).data('entryMotionvalue'));
+		// You'll now have array containing string values
+		//console.log($entryMotionValues); // eg: ["1", "2", "3"]
+		var str = "switch-motion-";
+		var json = "";
+		var tabId = [];
+		var s = "";
+		$.each($entryMotionIds, function(index, value){
+			s = str + value;
+			tabId[s] = value;
+			json += "\"" + s + "\":" + $entryMotionValues[index] + ",";
+			
+		})
+		//console.log(json);
+		switchValues += json;
+		//console.log(switchValues); 
+
+		// Select elements by their data attribute
+		const $entryFireIdElements = $('[data-entry-fireid]');
+		// Map over each element and extract the data value
+		const $entryFireIds =
+			$.map($entryFireIdElements, item => $(item).data('entryFireid'));
+		// You'll now have array containing string values
+		//console.log($entryFireIds); // eg: ["1", "2", "3"]
+		// Select elements by their data attribute
+		const $entryFireValueElements = $('[data-entry-firevalue]');
+		// Map over each element and extract the data value
+		const $entryFireValues =
+			$.map($entryFireValueElements, item => $(item).data('entryFirevalue'));
+		// You'll now have array containing string values
+		//console.log($entryFireValues); // eg: ["1", "2", "3"]
+		str = "switch-fire-";
+		json = "";
+		$.each($entryFireIds, function(index, value){
+			s = str + value;
+			tabId[s] = value;
+			json += "\"" + str + value + "\":" + $entryFireValues[index] + ","
+		})
+		//console.log(json);
+		switchValues += json;
+		//console.log(switchValues); 
+
+		// Select elements by their data attribute
+		const $entryFloodIdElements = $('[data-entry-floodid]');
+		// Map over each element and extract the data value
+		const $entryFloodIds =
+			$.map($entryFloodIdElements, item => $(item).data('entryFloodid'));
+		// You'll now have array containing string values
+		//console.log($entryFloodIds); // eg: ["1", "2", "3"]
+		// Select elements by their data attribute
+		const $entryFloodValueElements = $('[data-entry-floodvalue]');
+		// Map over each element and extract the data value
+		const $entryFloodValues =
+			$.map($entryFloodValueElements, item => $(item).data('entryFloodvalue'));
+		// You'll now have array containing string values
+		//console.log($entryFloodValues); // eg: ["1", "2", "3"]
+		str = "switch-flood-";
+		json = "";
+		$.each($entryFloodIds, function(index, value){
+			s = str + value;
+			tabId[s] = value;
+			json += "\"" + str + value + "\":" + $entryFloodValues[index] + ","
+		})
+		//console.log(json);
+		switchValues += json;
+		switchValues = switchValues.substring( 0, switchValues.length-1 );
+		switchValues += "}";
+		//console.log(switchValues); 
+		//console.log(tabId);
+		
+			
+	</script>
+{% endblock %}

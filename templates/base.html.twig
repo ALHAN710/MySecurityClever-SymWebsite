@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			My Security Clever - {% block title %}{% endblock %}
+		</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="CLEVER Electric Technologies ">
+		<link rel="icon" type="image/ico" href="/images/logoCLETech.ico">
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+		<!-- Bootstrap core CSS with custom theme variables -->
+		<link href="/css/bootstrap-custom.css" rel="stylesheet">
+
+		<!-- Additional styles for this template -->
+		<link href="/css/iot-theme.css" rel="stylesheet">
+
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
+		<!--
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/fontawesome.min.css" integrity="sha256-mM6GZq066j2vkC2ojeFbLCcjVzpsrzyMVUnRnEQ5lGw=" crossorigin="anonymous" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/regular.min.css" integrity="sha256-Pd28JXamAUfl4NS9QzGAdbaqdPQGG9dKLj3caGj28fg=" crossorigin="anonymous" />
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/solid.min.css" integrity="sha256-APTxfVyJgjHUS35EeuRpYs2tAbIQO7UF0nAV6krdYJ0=" crossorigin="anonymous" />
+		-->
+		<script>var switchValues = "";</script>
+		{% block stylesheet	%}{% endblock %}
+		
+	</head>
+
+	<body>
+
+		<!-- Preloader -->
+		<div id="iot-preloader">
+			<div class="center-preloader d-flex align-items-center">
+				<div class="spinners">
+					<div class="spinner01"></div>
+					<div class="spinner02"></div>
+				</div>
+			</div>
+		</div>
+
+
+		<!-- Alerts Modal -->
+		<div class="modal modal-nobg centered fade" id="alertsModal" tabindex="-1" role="dialog" aria-label="Alerts" aria-hidden="true">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div class="alert alert-danger alert-dismissible fade show border-0" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							Security SW update available
+						</div>
+						<div class="alert alert-warning alert-dismissible fade show border-0" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							New device recognized
+						</div>
+						<div class="alert alert-warning alert-dismissible fade show border-0" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true">&times;</span>
+							</button>
+							User profile is not complete
+						</div>
+					</div>
+				</div>
+			</div>
+			<button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+
+		<!-- Arming Modal -->
+		<div class="modal modal-warning centered fade" id="armModal" tabindex="-1" role="dialog" aria-label="Arming" aria-hidden="true">
+			<div class="modal-dialog modal-sm" role="document">
+				<div class="modal-content">
+					<div class="modal-body">
+						<div id="armTimer">
+							<h3 class="font-weight-bold">EXIT NOW!
+								<span class="timer font-weight-normal"></span>
+							</h3>
+						</div>
+					</div>
+				</div>
+			</div>
+			<button type="button" class="close close-modal" data-dismiss="modal" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		</div>
+
+		<!-- Alarm Modal -->
+		<div class="modal modal-danger centered fade" id="alarmModal" tabindex="-1" role="dialog" aria-label="ALARM" aria-hidden="true" data-backdrop="static">
+			<div class="modal-dialog" role="document">
+				<div class="modal-content" data-dismiss="modal">
+					<div class="modal-body d-flex">
+						<svg class="icon-sprite icon-2x icon-pulse"><use xlink:href="/images/icons-sprite.svg#alarm"/></svg>
+						<h3 class="text-right font-weight-bold ml-auto align-self-center">MOTION DETECTED!</h3>
+					</div>
+				</div>
+				<p class="mt-2 text-center text-danger">Click the red area to accept/close message</p>
+			</div>
+		</div>
+
+		<!-- Wrapper START -->
+		<div id="wrapper" class="hidden">
+
+			<!-- Top navbar START -->
+			{% include 'partials/top_menu.html.twig' with {'user': app.user} %}
+			<!-- Top navbar END -->
+
+			<!-- wrapper-offcanvas START -->
+			<div class="wrapper-offcanvas">
+
+				<!-- row-offcanvas START -->
+				<div class="row-offcanvas row-offcanvas-left">
+
+					<!-- Side menu START -->
+					<div id="sidebar" class="sidebar-offcanvas">
+						<ul class="nav flex-column nav-sidebar">
+							<li class="nav-item active">
+								<a class="nav-link active" href="{{ path("home_page") }}">
+									<svg class="icon-sprite"><use xlink:href="/images/icons-sprite.svg#home"/></svg> 
+									Home
+								</a>
+							</li>
+							{#
+							{% if devicesTab.Camera|length > 0  %}
+								<li class="nav-item">
+									<a class="nav-link" href="{{ path("video_cameras_streaming") }}">
+										<svg class="icon-sprite"><use xlink:href="/images/icons-sprite.svg#camera"/></svg>
+										Cameras
+									</a>
+								</li>
+							{% endif %}
+							{% if devicesTab.Motion|length > 0  %}
+								<li class="nav-item">
+									<a class="nav-link" href="{{ path("motion_sensors_index") }}">
+										<!-- <svg class="icon-sprite"><use xlink:href="/images/icons-sprite.svg#bulb-eco"/></svg> -->
+										<i class="fas fa-walking fa-1x mx-2"></i> Motion Sensors
+									</a>
+								</li>
+							{% endif %}
+							{% if devicesTab.Fire|length > 0  %}
+								<li class="nav-item">
+									<a class="nav-link" href="#">
+										<!-- <svg class="icon-sprite"><use xlink:href="/images/icons-sprite.svg#fire"/></svg> -->
+
+										<i class="fas fa-fire-alt fa-1x mx-2"></i>Fire Sensors
+									</a>
+								</li>
+							{% endif %}			
+							{% if devicesTab.Flood|length > 0  %}
+								<li class="nav-item">
+									<a class="nav-link" href="#">
+										<!--<svg class="icon-sprite"><use xlink:href="/images/flood-reg.svg#Capa_1"/></svg>-->
+										<i class="fas fa-water fa-1x mx-2"></i>Anti-Flood Sensors
+									</a>
+								</li>
+							{% endif %}
+							{% if devicesTab.Alarm|length > 0  %}
+								<li class="nav-item">
+									<a class="nav-link" href="#">
+										<svg class="icon-sprite"><use xlink:href="/images/icons-sprite.svg#alarm"/></svg>
+										<span>Alarms</span>
+									</a>
+								</li>
+							{% endif %}
+							#}
+							<li class="nav-item">
+								<a class="nav-link" href="{{path("super_admin_settings")}}">
+									<svg class="icon-sprite"><use xlink:href="/images/icons-sprite.svg#settings"/></svg>
+									Settings
+								</a>
+							</li>
+						</ul>
+					</div>
+					<!-- Side menu END -->
+
+					<div id="main">
+          				<div class="container-fluid">
+							{% for label, messages in app.flashes %}
+								<div class="container mt-3">
+									<div class="alert alert-info text-center">
+										{% for message in messages %}
+											<p>{{ message | raw }}</p>
+										{% endfor %}
+									</div>
+								</div>
+
+							{% endfor %}
+					
+							{% block body %}
+							
+							{% endblock %}
+						</div>
+
+						<!-- Main content overlay when side menu appears  -->
+						<div class="cover-offcanvas" data-toggle="offcanvas"></div>	
+
+					</div>
+        			<!-- Main content END -->
+				</div>
+				<!-- row-offcanvas END -->
+
+			</div>
+			<!-- wrapper-offcanvas END -->
+
+		</div>
+		<!-- Wrapper END -->
+
+		<!-- FAB button - bottom right on large screens -->
+		<!--
+		<button id="info-toggler" type="button" class="btn btn-primary btn-fab btn-fixed-br d-none d-lg-inline-block">
+
+			<svg class="icon-sprite">
+				<use xlink:href="/images/icons-sprite.svg#info"/>
+			</svg>
+
+		</button> 
+		-->
+
+		<!-- SVG assets - not visible -->
+		<svg id="svg-tool" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+			<defs>
+				<style type="text/css">
+					.glow circle {
+						fill: url('#radial-glow')
+					}
+				</style>
+
+				<filter id="blur" x="-25%" y="-25%" width="150%" height="150%">
+					<feGaussianBlur in="SourceGraphic" stddeviation="3"/>
+				</filter>
+
+				<radialGradient id="radial-glow" fx="50%" fy="50%" r="50%">
+					<stop offset="0" stop-color="#0F9CE6" stop-opacity="1"/>
+					<stop offset="1" stop-color="#0F9CE6" stop-opacity="0"/>
+				</radialGradient>
+
+			</defs>
+		</svg>
+
+		<!-- jQuery -->
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous">
+		</script>
+
+		<!-- <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script> -->
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
+		<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
+
+		<!-- Bootstrap bundle -->
+		<script src="/js/bootstrap.bundle.min.js">
+		</script>
+		
+		<!-- Cross browser support for SVG icon sprites -->
+		<script src="/js/svg4everybody.min.js">
+		</script>
+
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script> 
+		<!--
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/fontawesome.min.js" integrity="sha256-7zqZLiBDNbfN3W/5aEI1OX/5uvck9V0yhwKOA9Oe49M=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/regular.min.js" integrity="sha256-DgfbtH6ya+miGHqPZNQCTK3JPq0KdQg45kOZzmotUoM=" crossorigin="anonymous"></script>
+		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/solid.min.js" integrity="sha256-JoCB3vT7DUEBtHyKsyjHG/0ab3slcq2L6QnrKf3yO1A=" crossorigin="anonymous"></script>
+		-->
+		
+		<!-- jQuery countdown timer plugin (Exit modal, Garage doors, Washing machine) -->
+		<!-- <script src="/js/iot-timer.min.js">
+		</script> -->
+		<script src="/js/iot-timer.js">
+		</script>
+
+		<!-- Basic theme functionality (arming, garage doors, switches ...) - using jQuery -->
+		<!-- <script src="/js/iot-functions.min.js">
+		</script> -->
+		<script src="/js/iot-functions.js">
+		</script>
+
+		<script src="/js/home.js">
+		</script>
+
+		{% block javascripts %}{% endblock %}
+
+	</body>
+</html>

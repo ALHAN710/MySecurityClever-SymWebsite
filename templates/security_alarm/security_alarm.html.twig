@@ -1,0 +1,41 @@
+<html lang="en">
+	<head>
+		<meta charset="UTF-8">
+		<title>
+			My Security Clever - {% block title %}{% endblock %}
+		</title>
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta name="description" content="">
+		<meta name="author" content="CLEVER Electric Technologies ">
+
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+		<!-- Bootstrap core CSS with custom theme variables -->
+		<link href="/css/bootstrap-custom.css" rel="stylesheet">
+
+		<!-- Additional styles for this template -->
+		<link href="/css/iot-theme.css" rel="stylesheet">
+
+		<link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+
+	</head>
+
+	<body>
+<style>
+    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
+    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
+</style>
+ 
+<div class="example-wrapper">
+    <h1>Hello </h1>
+    {{  dump(device.type)  }}
+    {{  dump(param)  }}
+    This friendly message is coming from:
+    <ul>
+        <li>Your controller at <code><a href="{{ 'C:/Users/PASCAL ALHADOUM/Documents/Projets/MBC/MySecurityClever-SymWebsite/src/Controller/SecurityAlarmController.php'|file_link(0) }}">src/Controller/SecurityAlarmController.php</a></code></li>
+        <li>Your template at <code><a href="{{ 'C:/Users/PASCAL ALHADOUM/Documents/Projets/MBC/MySecurityClever-SymWebsite/templates/security_alarm/index.html.twig'|file_link(0) }}">templates/security_alarm/index.html.twig</a></code></li>
+    </ul>
+</div>
+</body>
+</html>

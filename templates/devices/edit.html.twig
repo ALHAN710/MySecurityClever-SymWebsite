@@ -1,0 +1,92 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Device modification{% endblock %}
+
+
+{% block body %}
+
+  <h1>Modification of Device : {{ device.name }}</h1>
+
+  <div class="row">
+    <div class="col-12 col-sm-10 offset-sm-1">
+      <!-- Device tabs START -->
+      <ul class="nav nav-tabs nav-fill" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link active" data-toggle="tab" href="#editDevice" role="tab">DEVICE Config</a>
+        </li>
+        <li class="nav-item {% if device.type != 'Camera' %}d-none{% endif %}" id="cameraUrlTab">
+          <a class="nav-link" data-toggle="tab" href="#streamingUrlPane" role="tab">Camera URL Seeker</a>
+        </li>
+      </ul>
+      <div class="info-holder info-ct">
+        <div data-toggle="popover-all" data-content="Customized tabbed interface" data-original-title="Tabs" data-placement="top" data-offset="0,48"></div>
+      </div>
+      <!-- Device tabs panes -->
+      <div class="tab-content px-4 px-sm-0 py-sm-4 mt-4">
+        <!-- Edit Device pane START -->
+        <div class="tab-pane fade show active" id="editDevice" role="tabpanel">
+          {{ form_start(form) }}
+          
+            <div class="form-group row">
+                {{ form_label(form.name, null, {'label_attr': {'class': 'col-12 col-sm-3 col-form-label'}}) }}
+                <div class="col-12 col-sm-9">
+                {{ form_widget(form.name, {'attr': {'class': "form-control custom-focus"}}) }}
+                </div>
+                
+            </div>
+            <div class="form-group row">
+              {{ form_label(form.type, null, {'label_attr': {'class': 'col-12 col-sm-3 col-form-label'}}) }}
+              <div class="col-12 col-sm-9">
+                {{ form_widget(form.type, {'attr': {'class': "form-control custom-focus"}}) }}
+              </div>
+            </div>
+            <div class="form-group row" >
+              {{ form_label(form.moduleId, null, {'label_attr': {'class': 'col-12 col-sm-3 col-form-label'}}) }}
+              <div class="col-12 col-sm-9">
+                {{ form_widget(form.moduleId, {'attr': {'class': "form-control custom-focus"}}) }}
+              </div>
+            </div>
+            <div class="form-group row {% if device.type == 'Alarm' %}d-none{% endif %}" id="alert">
+              {{ form_label(form.alerte, null, {'label_attr': {'class': 'col-12 col-sm-3 col-form-label'}}) }}
+              <div class="col-12 col-sm-9">
+                {{ form_widget(form.alerte, {'attr': {'class': "form-control custom-focus"}}) }}
+              </div>
+            </div>
+            <div class="form-group row {% if device.type != 'Camera' %}d-none{% endif %}" id="streamingUrl">
+              {{ form_label(form.streamingUrl, null, {'label_attr': {'class': 'col-12 col-sm-3 col-form-label'}}) }}
+              <div class="col-12 col-sm-9">
+                {{ form_widget(form.streamingUrl, {'attr': {'class': "form-control custom-focus"}}) }}
+              </div>
+            </div>
+            <div class="form-group row {% if device.type == 'Alarm' %}d-none{% endif %}" id="notificationMessage">
+              {{ form_label(form.notificationMessage, null, {'label_attr': {'class': 'col-12 col-sm-3 col-form-label'}}) }}
+              <div class="col-12 col-sm-9">
+                {{ form_widget(form.notificationMessage, {'attr': {'class': "form-control custom-focus"}}) }}
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="offset-xs-0 offset-sm-3 col-12 col-sm-9 mt-3">
+                <button type="submit" class="btn btn-primary">Save</button>
+              </div>
+            </div>
+          <!-- </form> -->
+          {{ form_end(form) }}
+        </div>
+        <!-- Edit Device pane END --> 
+
+        <!-- StreamingUrl pane START -->
+            <div class="tab-pane fade" id="streamingUrlPane" role="tabpanel">
+                                
+            </div>
+        <!-- StreamingUrl pane END -->
+
+      </div> 
+      <!-- Device tabs END -->
+    </div>
+  </div>
+        
+{% endblock %}
+
+{% block javascripts %}
+    <script src="/js/devices.js"></script>
+{% endblock %}

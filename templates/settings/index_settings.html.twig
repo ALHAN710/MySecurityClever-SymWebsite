@@ -1,0 +1,254 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Settings{% endblock %}
+
+{% block body %}
+  <!-- Main content START -->
+  <div class="row">
+    <div class="col-12 col-sm-10 offset-sm-1">
+      <!-- Settings tabs START -->
+      <ul class="nav nav-tabs nav-fill" role="tablist">
+        <li class="nav-item">
+          <a class="nav-link {% if tabpanel == 0 %}active{% endif %}" data-toggle="tab" href="#userconfig" role="tab">User Configurations</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link {% if tabpanel != 0 %}active{% endif %}" data-toggle="tab" href="#devicesconfig" role="tab">Devices Configurations</a>
+        </li>
+        <!--
+        <li class="nav-item">
+          <a class="nav-link" data-toggle="tab" href="#password" role="tab">PASSWORD</a>
+        </li> -->
+      </ul>
+      <div class="info-holder info-ct">
+        <div data-toggle="popover-all" data-content="Customized tabbed interface" data-original-title="Tabs" data-placement="top" data-offset="0,48"></div>
+      </div>
+      <!-- Settings tab panes -->
+      <div class="tab-content px-4 px-sm-0 py-sm-4 mt-4">
+
+        <!-- User Config pane START -->
+        <div class="tab-pane fade {% if tabpanel == 0 %} show active {% endif %}" id="userconfig" role="tabpanel">
+          <!--
+          <table class="table table-dark">
+              <thead>
+                  <tr>
+                      <th scope="col">Username</th>
+                      <th scope="col">Role</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Phone</th>
+                      <th scope="col">Action</th>
+                  </tr>
+              </thead>
+              <tbody>
+                  <tr>
+                      <th scope="row">1</th>
+                      <td>Mark</td>
+                      <td>Otto</td>
+                      <td>@mdo</td>
+                      <td>
+                          <button class="btn btn-danger">
+                              <i class="fa fa-trash"></i> 
+                          </button>
+                          <button class="btn btn-secondary">
+                              <i class="fa fa-edit"></i> 
+                          </button>
+                      </td>
+                  </tr>
+                  <tr>
+                      <th scope="row">2</th>
+                      <td>Jacob</td>
+                      <td>Thornton</td>
+                      <td>@fat</td>
+                      <td>Otto</td>
+                  </tr>
+                  <tr>
+                      <th scope="row">3</th>
+                      <td>Larry</td>
+                      <td>the Bird</td>
+                      <td>@twitter</td>
+                  </tr>
+              </tbody>
+          </table>
+          -->
+
+          <div class="card-body table-responsive p-0" style="height: 500px;">
+            <table class="table table-head-fixed table-hover dt-responsive text-nowrap">
+              <thead>
+                  <tr>
+                      <th scope="col">Name</th>
+                      <th scope="col">Role</th>
+                      <th scope="col">Email</th>
+                      <th scope="col">Phone Number</th>
+                      <th scope="col" class="text-center">Actions</th>  
+                  </tr>
+              </thead>
+              <tbody>
+                  <!--<tr class="align-items-center" >
+                      <td>Name</td>
+                      <td>Role</td>
+                      <td>Email</td>
+                      <td>Phone Number</td>
+                      <td class="text-center">
+                          <a href="#" class="btn btn-info btn-xs rounded" data-toggle="tooltip" data-placement="top" title="Voir le Site"><i class="fa fa-eye"></i></a>
+                          <a href="#" class="btn btn-primary btn-xs rounded" data-toggle="tooltip" data-placement="top" title="Editer le Site"><i class="fa fa-edit "></i></a>
+                          <a href="#" class="btn btn-danger btn-xs rounded" data-toggle="tooltip" data-placement="top" title="Supprimer le Site"><i class="fa fa-trash "></i></a>
+                      </td>
+                  </tr>-->
+                  
+                {% for _user in pagination.data %}
+                  {# {{ dump(_user) }} #}
+                  <tr>
+                      <td> {{ _user.fullName }} </td>
+                      <td> {{ _user.roles[0] }} </td>
+                      <td> {{ _user.email }} </td>
+                      <td> {{ _user.fullPhone }} </td>
+                      <td class="text-center">
+                          <a href="{{ path('account_profile', {'id': _user.id}) }}" class="btn btn-primary btn-xs rounded" data-toggle="tooltip" data-placement="top" title="Edit {{ _user.firstName }} profile"><i class="fa fa-edit "></i></a>
+                          <a href="{{ path('admin_user_delete', {'id': _user.id}) }}" class="btn btn-danger btn-xs rounded" data-toggle="tooltip" data-placement="top" title="Delete {{ _user.firstName }}"><i class="fa fa-trash "></i></a>
+
+                      </td>
+                  </tr>
+                  
+                {% endfor %}
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>{{ pagination.display }}</td>
+                </tr>
+
+              </tbody>
+          
+            </table>
+          </div>
+          <a href="{{ path('admin_user_create') }}" class="btn btn-primary btn-xs rounded mt-4" data-toggle="tooltip" data-placement="top" title="Add New User"><i class="fa fa-plus-circle mr-1"></i>Add User</a>
+              
+        </div>
+        <!-- User Config pane END -->
+
+        <!-- Devices Config pane START -->
+        <div class="tab-pane fade {% if tabpanel != 0 %} show active {% endif %}" id="devicesconfig" role="tabpanel">
+          <!--
+          <table class="table table-dark">
+            <thead>
+                <tr>
+                    <th scope="col">Device name</th>
+                    <th scope="col">Type</th>
+                    <th scope="col">Alerte</th>
+                    <th scope="col">Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th scope="row">1</th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>
+                        <button class="btn btn-danger">
+                            <i class="fa fa-trash"></i> 
+                        </button>
+                        <button class="btn btn-secondary">
+                            <i class="fa fa-edit"></i> 
+                        </button>
+                    </td>
+                </tr>
+                <tr>
+                    <th scope="row">2</th>
+                    <td>Jacob</td>
+                    <td>Thornton</td>
+                    <td>@fat</td>
+                    
+                </tr>
+                <tr>
+                    <th scope="row">3</th>
+                    <td>Larry</td>
+                    <td>the Bird</td>
+                    <td>@twitter</td>
+                </tr>
+            </tbody>
+          </table>
+          -->
+          
+          <div class="card-body table-responsive p-0" style="height: 500px;">
+            <table class="table table-head-fixed table-hover dt-responsive text-nowrap">
+                <thead>
+                    <tr>
+                        <th>Device name</th>
+                        <th class="text-center">Type</th>
+                        <th class="text-center">Alerte</th>
+                        <th class="text-center">Actions</th>  
+                    </tr>
+                </thead>
+                <tbody>
+                  <!--
+                  <tr>
+                      <td>site.id</td>
+                      <td>site.name</td>
+                      <td>site.user.enterpriseName</td>
+                      <td class="text-center">
+                          <a href="#" class="btn btn-info btn-xs rounded" data-toggle="tooltip" data-placement="top" title="Voir le Site"><i class="fa fa-eye"></i></a>
+                          <a href="#" class="btn btn-primary btn-xs rounded" data-toggle="tooltip" data-placement="top" title="Editer le Site"><i class="fa fa-edit "></i></a>
+                          <a href="#" class="btn btn-danger btn-xs rounded" data-toggle="tooltip" data-placement="top" title="Supprimer le Site"><i class="fa fa-trash "></i></a>
+                      </td>
+                      
+                  </tr>-->
+                  {% for device in pagination.data1 %}
+                    {# {{ dump(device) }} #}
+                    <tr>
+                        <td> {{ device.name }} </td>
+                        <td class="text-center"> {{ device.type }} </td>
+                        <td class="text-center"> {{  device.type == 'Camera' ? 'Intrusion' : device.type == 'Alarme' ? '-' : device.alerte }} </td>
+                        <td class="text-center">
+                          <a href="{{ path('super_admin_devices_edit', {'id': device.id}) }}" class="btn btn-primary btn-xs rounded" data-toggle="tooltip" data-placement="top" title="Edit {{device.name}}"><i class="fa fa-edit "></i></a>
+                          <a href="{{ path('super_admin_devices_delete', {'id': device.id}) }}" class="btn btn-danger btn-xs rounded" data-toggle="tooltip" data-placement="top" title="Delete {{device.name}}"><i class="fa fa-trash "></i></a>
+
+                        </td>
+                    </tr>
+                  {% endfor %}
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td>{{ pagination.display1 }}</td>
+                  </tr>
+                </tbody>
+            
+            </table>
+          </div>
+          <a href="{{ path('super_admin_devices_create') }}" class="btn btn-primary btn-xs rounded mt-4" data-toggle="tooltip" data-placement="top" title="Add New Device"><i class="fa fa-plus-circle mr-1"></i>Add Devices</a>
+          
+        </div>
+        <!-- Devices Config pane END -->
+
+        <!-- Password pane START -->
+        <!--
+        <div class="tab-pane fade" id="password" role="tabpanel">
+          <form>
+            <div class="form-group row">
+              <label for="user-password" class="col-12 col-sm-3 col-form-label">Password</label>
+              <div class="col-12 col-sm-9">
+                <input class="form-control custom-focus" type="password" value="professor" id="user-password">
+              </div>
+            </div>
+            <div class="form-group row has-success">
+              <label for="user-password-confirm" class="col-12 col-sm-3 col-form-label">Confirm password</label>
+              <div class="col-12 col-sm-9">
+                <input class="form-control custom-focus is-valid" type="password" value="professor" id="user-password-confirm">
+              </div>
+            </div>
+            <div class="form-group row">
+              <div class="offset-xs-0 offset-sm-3 col-12 col-sm-9 mt-3">
+                <button type="submit" class="btn btn-primary">Save password</button>
+              </div>
+            </div>
+          </form>
+        </div>
+        -->
+        <!-- Password pane END -->
+
+      </div>
+      <!-- Profile tabs END -->
+    </div>
+  </div>
+       
+{% endblock %}
