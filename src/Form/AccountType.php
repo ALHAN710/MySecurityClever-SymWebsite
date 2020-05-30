@@ -16,7 +16,9 @@ class AccountType extends ApplicationType
             ->add('firstName')
             ->add('lastName')
             ->add('email')
-            ->add(
+            ->add('countryCode')
+            ->add('phoneNumber')
+            /*->add(
                 'avatar',
                 FileType::class,
                 $this->getConfiguration(
@@ -44,9 +46,7 @@ class AccountType extends ApplicationType
                         ],
                     ]
                 )
-            )
-            ->add('countryCode')
-            ->add('phoneNumber')
+            )*/
             //->add('email2')
             //->add('hash')
             //->add('phoneNumber2')

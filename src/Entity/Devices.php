@@ -88,6 +88,7 @@ class Devices
         }
     }
 
+
     public function getId(): ?int
     {
         return $this->id;

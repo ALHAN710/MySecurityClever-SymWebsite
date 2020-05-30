@@ -5,6 +5,8 @@ var in_alert = $('#devices_alerte');
 var notifMess = $("#notificationMessage");
 var in_notifMess = $('#devices_notificationMessage');
 var urlTab = $("#cameraUrlTab");
+var ipAddress = $("#Ipaddress");
+var in_ipAddress = $("#devices_Ipaddress");
 
 if ($('#devices_type').val() === 'Camera') {
     //Affichage des champs propre à l'équipement de type Camera
@@ -19,6 +21,10 @@ if ($('#devices_type').val() === 'Camera') {
     _alert.removeClass("d-none");
     in_alert.removeAttr("required");
     _alert.addClass("d-none");
+
+    ipAddress.removeClass("d-none");
+    in_ipAddress.removeAttr("required");
+    ipAddress.addClass("d-none");
 }
 else {
 
@@ -29,11 +35,17 @@ else {
     streamingUrl.addClass("d-none");
     //$("#streamingUrl").hide(); //then hide
     urlTab.addClass("d-none");
+
+    ipAddress.removeClass("d-none");
+    in_ipAddress.removeAttr("required");
+    ipAddress.addClass("d-none");
     if ($('#devices_type').val() === 'Alarm') {
         //Masquer les champs non utile pour l'équipement de type Alarm
         notifMess.removeClass("d-none");
         in_notifMess.removeAttr("required");
         notifMess.addClass("d-none");
+        ipAddress.removeClass("d-none");
+        in_ipAddress.attr('required', 'required');
 
         _alert.removeClass("d-none");
         in_alert.removeAttr("required");
@@ -53,9 +65,13 @@ else {
 $('#devices_type').change(function () {
     Str = String($('#devices_type').val());
     Name = $('#devices_type option[value=\"' + Str + '\"]').text();
-    console.log('devices_type val ' + Str);
-    console.log('Option selected : ' + String(Name));
-    console.log('Type of devices_type : ' + jQuery.type($('#devices_type').val()))
+    //console.log('devices_type val ' + Str);
+    //console.log('Option selected : ' + String(Name));
+    //console.log('Type of devices_type : ' + jQuery.type($('#devices_type').val()));
+
+    ipAddress.removeClass("d-none");
+    in_ipAddress.removeAttr("required");
+    ipAddress.addClass("d-none");
 
     if ($('#devices_type').val() === 'Camera') {
         //Affichage des champs propre à l'équipement de type Camera
@@ -85,6 +101,9 @@ $('#devices_type').change(function () {
             notifMess.removeClass("d-none");
             in_notifMess.removeAttr("required");
             notifMess.addClass("d-none");
+
+            ipAddress.removeClass("d-none");
+            in_ipAddress.attr('required', 'required');
 
             _alert.removeClass("d-none");
             in_alert.removeAttr("required");

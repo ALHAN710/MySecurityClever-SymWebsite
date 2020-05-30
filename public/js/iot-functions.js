@@ -39,7 +39,7 @@ var iot;
     switchSingle: function (el, status) {
 
       // Check switch statuses
-      var switchValues = JSON.parse(localStorage.getItem('switchValues')) || {};
+      //var switchValues = JSON.parse(localStorage.getItem('switchValues')) || {};
 
       // Change basic appearance
       /*
@@ -48,7 +48,7 @@ var iot;
       */
 
       var str = String(el);
-      console.log('element id as string : ' + str);
+      //console.log('element id as string : ' + str);
 
       if (str.indexOf('switch-motion-') >= 0) {
         iot.armingSecuritySystem(el, status);
@@ -67,9 +67,110 @@ var iot;
         $('#' + el).closest("label").toggleClass("checked", status);
         str = tabId[el];
       }
+      else if (str.indexOf('switch-door-') >= 0) {
+        //iot.armingSecuritySystem(el, status);
+        $('[data-unit="' + el + '"]').toggleClass("active");
+        $('#' + el).closest("label").toggleClass("checked", status);
+        str = tabId[el];
+      }
+      else if (str.indexOf('switch-emergency-') >= 0) {
+        //iot.armingSecuritySystem(el, status);
+        $('[data-unit="' + el + '"]').toggleClass("active");
+        $('#' + el).closest("label").toggleClass("checked", status);
+
+        //if (status) {
+        /*var $data = JSON.stringify({
+          "exp": "central",
+          "cmd": "stop"
+        });*/
+        str = tabId[el];
+        //console.log('tabId emergency value : ' + str);
+        var $data = JSON.stringify({
+          "moduleId": str,
+          "detect": 1
+        });
+
+        //console.log($data);
+
+        $.ajax({
+          type: "POST",//method type
+          contentType: "application/json; charset=utf-8",
+          url: $alarmUrl,///Target function that will be return result
+          data: $data,//parameter pass data is parameter name param is value 
+          dataType: "json",
+          success: function (data) {
+            //alert("Success");
+            //console.log(data);
+            //$('[data-unit="' + el + '"]').toggleClass("active");
+            //$('#' + el).closest("label").toggleClass("checked", !status);
+            //str = "";
+
+          },
+          error: function (result) {
+            console.log("Error");
+            console.log(result);
+          }
+        });
+
+        //}
+        str = "";
+      }
       else if (str.indexOf('switch-house-lock') >= 0) {
         iot.armingSecuritySystem(el, status);
         str = "house";
+
+        //console.log(tabAlarmIp);  
+        if (!status) {
+          /*var $data = JSON.stringify({
+            "exp": "central",
+            "cmd": "stop"
+          });*/
+          var $data = JSON.stringify({
+            "moduleId": "002",
+            "alarm": "stop"
+          });
+
+          console.log($data);
+
+          $.ajax({
+            type: "POST",//method type
+            contentType: "application/json; charset=utf-8",
+            url: $alarmUrl,///Target function that will be return result
+            data: $data,//parameter pass data is parameter name param is value 
+            dataType: "json",
+            success: function (data) {
+              //alert("Success");
+              console.log(data);
+
+            },
+            error: function (result) {
+              console.log("Error");
+              console.log(result);
+            }
+          });
+
+          //console.log($data);
+          /*$.each($entryAlarmIps, function (index, value) {
+            var $url = "http://" + tabAlarmIp[index] + "/ring";
+            $.ajax({
+              type: "POST",//method type
+              contentType: "application/json; charset=utf-8",
+              url: $url,///Target function that will be return result
+              data: $data,//parameter pass data is parameter name param is value 
+              dataType: "json",
+              success: function (data) {
+                //alert("Success");
+                //console.log(data);
+
+              },
+              error: function (result) {
+                console.log("Error");
+                console.log(result);
+              }
+            });
+          });*/
+          //console.log(status);
+        }
       }
       else if (str.indexOf('switch-camera-') >= 0) {
         // ON status - connect cam
@@ -149,10 +250,10 @@ var iot;
       }
 
       // Update localStorage
-      if (localStorage) {
+      /*if (localStorage) {
         switchValues[el] = status;
         localStorage.setItem("switchValues", JSON.stringify(switchValues));
-      }
+      }*/
 
     },
 
@@ -213,7 +314,7 @@ var iot;
       $('#armTimer .timer').timer({
         countdown: true,
         format: '%s',
-        duration: '10s', // Here you can set custom time to exit
+        duration: '60s', // Here you can set custom time to exit
         callback: function () {
           $('#armModal').modal('hide'); // Automaticaly hide modal on countdown end
 

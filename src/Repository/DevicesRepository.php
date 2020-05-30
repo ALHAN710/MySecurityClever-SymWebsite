@@ -64,7 +64,7 @@ class DevicesRepository extends ServiceEntityRepository
     }
 
     /**
-     * Number of Motion Sensor Device
+     * Number of Motion Sensor 
      *
      * @return integer|null
      */
@@ -79,7 +79,7 @@ class DevicesRepository extends ServiceEntityRepository
     }
 
     /**
-     * Number of Fire Device Sensor 
+     * Number of Fire Sensor 
      *
      * @return integer|null
      */
@@ -94,7 +94,7 @@ class DevicesRepository extends ServiceEntityRepository
     }
 
     /**
-     * Number of Flood Device Senesor
+     * Number of Flood Sensor
      *
      * @return integer|null
      */
@@ -106,6 +106,21 @@ class DevicesRepository extends ServiceEntityRepository
     public function getFloodSensorDevice()
     {
         return $this->findBy(['type' => 'Sensor', 'alerte' => 'Flood']);
+    }
+
+    /**
+     * Number of Door Sensor
+     *
+     * @return integer|null
+     */
+    public function getNumberOfDoorSensor(): ?int
+    {
+        return count($this->findBy(['type' => 'Sensor', 'alerte' => 'Opening']));
+    }
+
+    public function getDoorSensorDevice()
+    {
+        return $this->findBy(['type' => 'Sensor', 'alerte' => 'Opening']);
     }
 
     /**
@@ -141,8 +156,9 @@ class DevicesRepository extends ServiceEntityRepository
         $tab['NbMotionSensor'] = $this->getNumberOfMotionSensor();
         $tab['NbFireSensor']   = $this->getNumberOfFireSensor();
         $tab['NbFloodSensor']  = $this->getNumberOfFloodSensor();
-        $tab['NbAlarm']        = $this->getNumberOfAlarm();
+        $tab['NbDoorSensor']   = $this->getNumberOfDoorSensor();
         $tab['NbEmergency']    = $this->getNumberOfEmergencyBtn();
+        $tab['NbAlarm']        = $this->getNumberOfAlarm();
 
         return $tab;
     }
@@ -152,12 +168,13 @@ class DevicesRepository extends ServiceEntityRepository
 
         $tabDevices = [];
 
-        $tabDevices['Camera'] = $this->getCameraDevice();
-        $tabDevices['Motion'] = $this->getMotionSensorDevice();
-        $tabDevices['Fire']   = $this->getFireSensorDevice();
-        $tabDevices['Flood']  = $this->getFloodSensorDevice();
-        $tabDevices['Alarm']  = $this->getAlarmDevice();
+        $tabDevices['Camera']    = $this->getCameraDevice();
+        $tabDevices['Motion']    = $this->getMotionSensorDevice();
+        $tabDevices['Fire']      = $this->getFireSensorDevice();
+        $tabDevices['Flood']     = $this->getFloodSensorDevice();
+        $tabDevices['Door']      = $this->getDoorSensorDevice();
         $tabDevices['Emergency'] = $this->getEmergencyBtnDevice();
+        $tabDevices['Alarm']     = $this->getAlarmDevice();
 
         return $tabDevices;
     }

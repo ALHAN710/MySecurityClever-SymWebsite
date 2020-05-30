@@ -9,10 +9,13 @@
 		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 		<meta name="description" content="">
 		<meta name="author" content="CLEVER Electric Technologies ">
+		
+		
 		<link rel="icon" type="image/ico" href="/images/logoCLETech.ico">
-
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
-
+		
+		{#<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+		#}
+		<link rel="stylesheet" href="/css/bootstrap4.min.css">
 		<!-- Bootstrap core CSS with custom theme variables -->
 		<link href="/css/bootstrap-custom.css" rel="stylesheet">
 
@@ -21,12 +24,12 @@
 
 		<!-- Font Awesome -->
 		<link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+		{#<!--
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/all.min.css" integrity="sha256-mmgLkCYLUQbXn0B1SRqzHar6dCnv9oZFPEC1g1cwlkk=" crossorigin="anonymous" />
-		<!--
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/fontawesome.min.css" integrity="sha256-mM6GZq066j2vkC2ojeFbLCcjVzpsrzyMVUnRnEQ5lGw=" crossorigin="anonymous" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/regular.min.css" integrity="sha256-Pd28JXamAUfl4NS9QzGAdbaqdPQGG9dKLj3caGj28fg=" crossorigin="anonymous" />
 		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/css/solid.min.css" integrity="sha256-APTxfVyJgjHUS35EeuRpYs2tAbIQO7UF0nAV6krdYJ0=" crossorigin="anonymous" />
-		-->
+		-->#}
 		<script>var switchValues = "";</script>
 		{% block stylesheet	%}{% endblock %}
 		
@@ -172,12 +175,14 @@
 								</li>
 							{% endif %}
 							#}
-							<li class="nav-item">
-								<a class="nav-link" href="{{path("super_admin_settings")}}">
-									<svg class="icon-sprite"><use xlink:href="/images/icons-sprite.svg#settings"/></svg>
-									Settings
-								</a>
-							</li>
+							{% if is_granted('ROLE_ADMIN') == true %}
+								<li class="nav-item">
+									<a class="nav-link" href="{{path("super_admin_settings")}}">
+										<svg class="icon-sprite"><use xlink:href="/images/icons-sprite.svg#settings"/></svg>
+										Settings
+									</a>
+								</li>
+							{% endif	%}
 						</ul>
 					</div>
 					<!-- Side menu END -->
@@ -186,15 +191,16 @@
           				<div class="container-fluid">
 							{% for label, messages in app.flashes %}
 								<div class="container mt-3">
-									<div class="alert alert-info text-center">
+									<div class="alert alert-info alert-dismissible fade show">
+									<!-- <div class="alert alert-info text-center"> -->
+										<button type="button" class="close" data-dismiss="alert">&times;</button>
 										{% for message in messages %}
 											<p>{{ message | raw }}</p>
 										{% endfor %}
 									</div>
 								</div>
-
-							{% endfor %}
-					
+							{% endfor %} 
+				
 							{% block body %}
 							
 							{% endblock %}
@@ -214,7 +220,7 @@
 		</div>
 		<!-- Wrapper END -->
 
-		<!-- FAB button - bottom right on large screens -->
+		{#<!-- FAB button - bottom right on large screens -->
 		<!--
 		<button id="info-toggler" type="button" class="btn btn-primary btn-fab btn-fixed-br d-none d-lg-inline-block">
 
@@ -223,7 +229,7 @@
 			</svg>
 
 		</button> 
-		-->
+		-->#}
 
 		<!-- SVG assets - not visible -->
 		<svg id="svg-tool" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
@@ -263,7 +269,7 @@
 		</script>
 
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/all.min.js" integrity="sha256-MAgcygDRahs+F/Nk5Vz387whB4kSK9NXlDN3w58LLq0=" crossorigin="anonymous"></script> 
-		<!--
+		{#<!--
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/fontawesome.min.js" integrity="sha256-7zqZLiBDNbfN3W/5aEI1OX/5uvck9V0yhwKOA9Oe49M=" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/regular.min.js" integrity="sha256-DgfbtH6ya+miGHqPZNQCTK3JPq0KdQg45kOZzmotUoM=" crossorigin="anonymous"></script>
 		<script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.12.1/js/solid.min.js" integrity="sha256-JoCB3vT7DUEBtHyKsyjHG/0ab3slcq2L6QnrKf3yO1A=" crossorigin="anonymous"></script>
@@ -271,13 +277,13 @@
 		
 		<!-- jQuery countdown timer plugin (Exit modal, Garage doors, Washing machine) -->
 		<!-- <script src="/js/iot-timer.min.js">
-		</script> -->
+		</script> -->#}
 		<script src="/js/iot-timer.js">
 		</script>
 
-		<!-- Basic theme functionality (arming, garage doors, switches ...) - using jQuery -->
+		{#<!-- Basic theme functionality (arming, garage doors, switches ...) - using jQuery -->
 		<!-- <script src="/js/iot-functions.min.js">
-		</script> -->
+		</script> -->#}
 		<script src="/js/iot-functions.js">
 		</script>
 

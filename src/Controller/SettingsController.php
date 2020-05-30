@@ -23,9 +23,7 @@ class SettingsController extends ApplicationController
             ->setLabelOrder(['firstName', 'name'])
             ->setOrder(['ASC', 'ASC']);
 
-
-        dump($pagination);
-
+        //dump($pagination);
 
         return $this->render('settings/index_settings.html.twig', [
             'pagination' => $pagination,

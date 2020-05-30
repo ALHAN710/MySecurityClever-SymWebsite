@@ -5,12 +5,16 @@
 {%	endblock	%}
 
 {% block stylesheet	%}
+
 	<script>
 		var $urlUpdateState = "{{ path('security_state') }}";
-		{%	set state = security.activation ? 1 : 0 %}
+		var $alarmUrl = "{{ path('security_alarm')	}}";
+		{%	set state = security[0].activation ? 1 : 0 %}
 		var houseSecurityState = {{ state }};
 		console.log('House security state : ' + houseSecurityState);
+		console.log('alarmUrl :' + $alarmUrl);
 	</script>
+
 {% endblock	%}
 
 {%	block body	%}
@@ -29,8 +33,8 @@
 		<div class="col-sm-12 col-md-12">
 
 			<!-- Security system START -->
-			{%	set state = security.activation ? 1 : 0 %}
-			<div class="card lock {% if security.activation == 1 %} active {% endif %}" data-unit="switch-house-lock" data-entry-securityvalue= {{ state }}>
+			{%	set state = security[0].activation ? 1 : 0 %}
+			<div class="card lock {% if security[0].activation == 1 %} active {% endif %}" data-unit="switch-house-lock" data-entry-securityvalue= {{ state }}>
 				<div class="card-body d-flex flex-wrap">
 					<svg class="icon-sprite icon-2x">
 						<use xlink:href="/images/icons-sprite.svg#home"/>
@@ -196,8 +200,8 @@
 				<!-- Motion sensors  START -->
 				<div class="card">
 					<div class="card-body">
-					<h3 class="card-title"><i class="fas fa-walking fa-2x mx-2"></i>
-					Motion sensors</h3>
+					<h4 class="card-title"><i class="fas fa-walking fa-2x mx-2"></i>
+					Motion</h4>
 						
 					</div>
 
@@ -225,7 +229,7 @@
 									</label> 
 								-->						
 								<div class="title-status">
-									<h4>{{ motion.name }}</h4>
+									<h5>{{ motion.name }}</h5>
  
 									<p class="status">
 										<span class="arm"></span>
@@ -278,7 +282,7 @@
 				<!-- Fire sensors  START -->
 				<div class="card">
 					<div class="card-body">
-					<h3 class="card-title"><i class="fas fa-fire-alt fa-2x mx-2"></i>Fire sensors</h3>
+					<h4 class="card-title"><i class="fas fa-fire-alt fa-2x mx-2"></i>Fire</h4>
 					
 					</div>
 
@@ -292,7 +296,7 @@
 
 							<li class="list-group-item d-flex pb-2 ">					
 								<div class="title-status">
-									<h4>{{ fire.name }}</h4>
+									<h5>{{ fire.name }}</h5>
  
 									<p class="status">
 										<span class="arm"></span>
@@ -339,7 +343,7 @@
 				<!-- Flood sensors  START -->
 				<div class="card">
 					<div class="card-body">
-					<h3 class="card-title"><i class="fas fa-water fa-2x mx-2"></i>Flood sensors</h3>
+					<h4 class="card-title"><i class="fas fa-water fa-2x mx-2"></i>Flood</h4>
 					
 					</div>
 
@@ -353,7 +357,7 @@
 
 							<li class="list-group-item d-flex pb-2 ">					
 								<div class="title-status">
-									<h4>{{ flood.name }}</h4>
+									<h5>{{ flood.name }}</h5>
  
 									<p class="status">
 										<span class="arm"></span>
@@ -400,111 +404,161 @@
 		{% endif %}
 	</div>
 	
-		<div class="row">
-			{% if devicesNb.NbAlarm > 0 %}
-				<div class="col-sm-12 col-md-6 col-xl-6">
+	<div class="row">
+		
+		{% if devicesNb.NbDoorSensor > 0 %}
+			<div class="col-sm-12 col-md-6 col-xl-4">
+				{# {{ dump(devicesNb.NbDoorSensor) }} #}
+				<!-- Door sensors  START -->
+				<div class="card">
+					<div class="card-body">
+					<h4 class="card-title"><i class="fas fa-door-open fa-2x mx-2"></i>Openings</h4>
+					
+					</div>
 
-					<!-- Alarms  START -->
-					<div class="card">
-						<div class="card-body">
-							<h3 class="card-title">Alarms</h3>
-						</div>
+					<hr class="my-0">
+					
+					{% for door in devicesTab.Door %}
+						<!-- {{ door.name }}  START -->
+						{# {{dump(door.name)}} #}
+						{%	set state = door.activation ? 1 : 0 %}
+						<ul class="list-group borderless lock-sensor" data-unit="switch-door-{{door.moduleId}}" data-entry-doorid="{{door.moduleId}}" data-entry-doorvalue= {{ state }}>
+
+							<li class="list-group-item d-flex pb-2 ">					
+								<div class="title-status">
+									<h5>{{ door.name }}</h5>
+
+									<p class="status">
+										<span class="arm"></span>
+									</p> 
+								</div>
+
+								<label class="switch ml-auto">
+									<input type="checkbox" id="switch-door-{{door.moduleId}}">
+
+								</label>
+
+							</li>
+							
+						</ul>
+						
+					
+						<!-- {{ door.name }}  END -->
 
 						<hr class="my-0">
-						{% for alarm in devicesTab.Alarm %}
 
-							<!-- {{ alarm.name }} START -->
-
-							<ul class="list-group borderless active" data-unit="motion-sensors-alarm">
-								<li class="list-group-item d-flex pb-0">
-									<svg class="icon-sprite icon-1x">
-										<use class="glow" fill="url(#radial-glow)" xlink:href="/images/icons-sprite.svg#glow"/>
-										<use xlink:href="/images/icons-sprite.svg#alarm"/>
-									</svg>
-									<h5>{{ alarm.name }}</h5>
-									<!--
-									<p class="ml-auto status">Connected</p>
-									-->
-								</li>
-								
-							</ul>
-
-							<!-- {{ alarm.name }}  END -->
-
-							<hr class="my-0">
-						{% endfor %}
-
-					</div>
-					<!-- Alarms  END -->
+					{% endfor %}
 
 				</div>
-			{% endif %}
+				<!-- Door Sensors  END -->
 
-			{% if devicesNb.NbEmergency > 0 %}
-				<div class="col-sm-12 col-md-6 col-xl-6">
-					<div class="col-sm-12 col-md-6 col-xl-4">
-						{# {{dump(devicesNb.NbEmergency) }} #}
-						<!-- Emergency Buttons  START -->
-						<div class="card">
-							<div class="card-body">
-							<h3 class="card-title"><i class="fas fa-exclamation-triangle fa-2x mx-2"></i>Emergency Buttons</h3>
+			</div>
+		{% endif %}
+
+		{% if devicesNb.NbEmergency > 0 %}
+			
+			<div class="col-sm-12 col-md-6 col-xl-4">
+				{# {{dump(devicesNb.NbEmergency) }} #}
+				<!-- Emergency Buttons  START -->
+				<div class="card">
+					<div class="card-body">
+					<h4 class="card-title"><i class="fas fa-exclamation-triangle fa-2x mx-2"></i>Emergency</h4>
+						
+					</div>
+
+					<hr class="my-0">
+					
+					{% for emergency in devicesTab.Emergency %}
+						<!-- {{ emergency.name }}  START -->
+						{# {{dump(emergency.name)}} lock-sensor#}
+						{%	set state = emergency.activation ? 1 : 0 %}
+						<ul class="list-group borderless " data-unit="switch-emergency-{{emergency.moduleId}}" data-entry-emergencyid="{{emergency.moduleId}}" data-entry-emergencyvalue= {{ state }}>
+
+							<li class="list-group-item d-flex pb-2 ">		
+								<div class="title-status">
+									<h5>{{ emergency.name }}</h5>
+
+									{#<p class="status">
+										<span class="arm"></span>
+									</p>#}
+								</div>
+
+								<label class="switch ml-auto">
+									<input type="checkbox" id="switch-emergency-{{emergency.moduleId}}">
+
+								</label>
+
+							</li>						
+
+						</ul>
+						<!--
+						<ul class="list-group borderless active" data-unit="">
+
+							<li class="list-group-item d-flex pt-2 pb-2">
 								
-							</div>
+								<p class="ml-auto status">
+									Connected								
+								</p>
+							</li>
 
-							<hr class="my-0">
-							
-							{% for emergency in devicesTab.Emergency %}
-								<!-- {{ emergency.name }}  START -->
-								{# {{dump(emergency.name)}} #}
-								<ul class="list-group borderless active lock-sensor" data-unit="switch-wash-machine">
+						</ul> 
+						-->
+					
+						<!-- {{ emergency.name }}  END -->
 
-									<li class="list-group-item d-flex pb-2 ">		
-										<div class="title-status">
-											<h4>{{ emergency.name }}</h4>
-		
-											<p class="status">
-												<span class="arm"></span>
-											</p>
-										</div>
+						<hr class="my-0">
 
-										<label class="switch ml-auto">
-											<input type="checkbox" id="switch-wash-machine">
+					{% endfor %}
 
-										</label>
+				</div>
+				<!-- Emergency Buttons  END -->
 
-									</li>						
+			</div>
+			
+		{% endif %}
 
-								</ul>
+		{% if devicesNb.NbAlarm > 0 %}
+			<div class="col-sm-12 col-md-6 col-xl-6">
+
+				<!-- Alarms  START -->
+				<div class="card">
+					<div class="card-body">
+						<h4 class="card-title">Alarms</h4>
+					</div>
+
+					<hr class="my-0">
+					{% for alarm in devicesTab.Alarm %}
+
+						<!-- {{ alarm.name }} START -->
+
+						<ul class="list-group borderless active" data-unit="motion-sensors-alarm" data-entry-alarmip="{{alarm.Ipaddress}}">
+							<li class="list-group-item d-flex pb-0">
+								<svg class="icon-sprite icon-1x">
+									<use class="glow" fill="url(#radial-glow)" xlink:href="/images/icons-sprite.svg#glow"/>
+									<use xlink:href="/images/icons-sprite.svg#alarm"/>
+								</svg>
+								<h5>{{ alarm.name }}</h5>
 								<!--
-								<ul class="list-group borderless active" data-unit="">
-
-									<li class="list-group-item d-flex pt-2 pb-2">
-										
-										<p class="ml-auto status">
-											Connected								
-										</p>
-									</li>
-
-								</ul> 
+								<p class="ml-auto status">Connected</p>
 								-->
+							</li>
 							
-								<!-- {{ emergency.name }}  END -->
+						</ul>
 
-								<hr class="my-0">
+						<!-- {{ alarm.name }}  END -->
 
-							{% endfor %}
+						<hr class="my-0">
+					{% endfor %}
 
-						</div>
-						<!-- Emergency Buttons  END -->
-
-					</div>
 				</div>
-			{% endif %}
+				<!-- Alarms  END -->
 
-		</div>
-		
-	
-	
+			</div>
+		{% endif %}
+
+
+	</div>
+			
 	{% if devicesNb.NbCamera > 0 %}
 		<div class="row">
 			{% for camera in devicesTab.Camera %}
@@ -551,7 +605,7 @@
 		</div>
 	{% endif %}
 	
-	<!-- Demonstration - buttons -->
+	{#<!-- Demonstration - buttons -->
 	<!--		
 	<br><br>
 	<div class="row">
@@ -567,19 +621,19 @@
 			<button type="button" class="btn btn-info my-2">INFO</button>
 		</div>
 	</div>
-	-->
+	-->#}
 {% endblock %}
 
 {% block javascripts %}
 
-	<!--<script src="/js/iot-timer.js">
+	{#<!--<script src="/js/iot-timer.js">
 	</script>-->
 
 	<!-- Basic theme functionality (arming, garage doors, switches ...) - using jQuery -->
 	<!-- <script src="/js/iot-functions.min.js">
 	</script> -->
 	<!--<script src="/js/iot-functions.js">
-	</script>-->
+	</script>-->#}
 
 	<script>
 		var switchValues = "";
@@ -630,7 +684,7 @@
 		$.each($entryFireIds, function(index, value){
 			s = str + value;
 			tabId[s] = value;
-			json += "\"" + str + value + "\":" + $entryFireValues[index] + ","
+			json += "\"" + str + value + "\":" + $entryFireValues[index] + ",";
 		})
 		//console.log(json);
 		switchValues += json;
@@ -655,15 +709,76 @@
 		$.each($entryFloodIds, function(index, value){
 			s = str + value;
 			tabId[s] = value;
-			json += "\"" + str + value + "\":" + $entryFloodValues[index] + ","
-		})
+			json += "\"" + str + value + "\":" + $entryFloodValues[index] + ",";
+		});
 		//console.log(json);
 		switchValues += json;
+
+		// Select elements by their data attribute
+		const $entryEmergencyIdElements = $('[data-entry-emergencyid]');
+		// Map over each element and extract the data value
+		const $entryEmergencyIds =
+			$.map($entryEmergencyIdElements, item => $(item).data('entryEmergencyid'));
+		// You'll now have array containing string values
+		//console.log($entryEmergencyIds); // eg: ["1", "2", "3"]
+		// Select elements by their data attribute
+		const $entryEmergencyValueElements = $('[data-entry-emergencyvalue]');
+		// Map over each element and extract the data value
+		const $entryEmergencyValues =
+			$.map($entryEmergencyValueElements, item => $(item).data('entryEmergencyvalue'));
+		// You'll now have array containing string values
+		//console.log($entryEmergencyValues); // eg: ["1", "2", "3"]
+		str = "switch-emergency-";
+		json = "";
+		$.each($entryEmergencyIds, function(index, value){
+			s = str + value;
+			tabId[s] = value;
+			json += "\"" + str + value + "\":" + $entryEmergencyValues[index] + ",";
+		});
+		//console.log(json);
+		switchValues += json;
+
+		// Select elements by their data attribute
+		const $entryDoorIdElements = $('[data-entry-doorid]');
+		// Map over each element and extract the data value
+		const $entryDoorIds =
+			$.map($entryDoorIdElements, item => $(item).data('entryDoorid'));
+		// You'll now have array containing string values
+		//console.log($entryDoorIds); // eg: ["1", "2", "3"]
+		// Select elements by their data attribute
+		const $entryDoorValueElements = $('[data-entry-doorvalue]');
+		// Map over each element and extract the data value
+		const $entryDoorValues =
+			$.map($entryDoorValueElements, item => $(item).data('entryDoorvalue'));
+		// You'll now have array containing string values
+		//console.log($entryDoorValues); // eg: ["1", "2", "3"]
+		str = "switch-door-";
+		json = "";
+		$.each($entryDoorIds, function(index, value){
+			s = str + value;
+			tabId[s] = value;
+			json += "\"" + str + value + "\":" + $entryDoorValues[index] + ",";
+		});
+		//console.log(json);
+		switchValues += json;
+
 		switchValues = switchValues.substring( 0, switchValues.length-1 );
 		switchValues += "}";
 		//console.log(switchValues); 
 		//console.log(tabId);
+
+		var tabAlarmIp = [];
+		// Select elements by their data attribute
+		const $entryAlarmIpElements = $('[data-entry-alarmip]');
+		// Map over each element and extract the data value
+		const $entryAlarmIps =
+			$.map($entryAlarmIpElements, item => $(item).data('entryAlarmip'));
+		// You'll now have array containing string values
+		//console.log($entryAlarmIps); // eg: ["1", "2", "3"]
+		$.each($entryAlarmIps, function(index, value){
+			tabAlarmIp[index] = value;
+		});
+		console.log(tabAlarmIp);
 		
-			
 	</script>
 {% endblock %}

@@ -42,7 +42,8 @@ class DevicesType extends ApplicationType
                     'choices' => [
                         'INTRUSION'  => 'Intrusion',
                         'FIRE'       => 'Fire',
-                        'FLOOD'      => 'Flood'
+                        'FLOOD'      => 'Flood',
+                        'OPENING'    => 'Opening'
                     ],
                     'label'    => "Alert Type"
                 ]
@@ -58,6 +59,11 @@ class DevicesType extends ApplicationType
                 'streamingUrl',
                 TextType::class,
                 $this->getConfiguration("Stream URL :", "Camera Url streaming ...")
+            )
+            ->add(
+                'Ipaddress',
+                TextType::class,
+                $this->getConfiguration("IP Address :", "Device IP in network ...")
             )
 
             ->add(

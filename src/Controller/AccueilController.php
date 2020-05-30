@@ -42,7 +42,8 @@ class AccueilController extends ApplicationController
             //dump($securityRepo->findOneBy(['id' => 1]));
             //$userRepo = $manager->getRepository(UserRepository::class);
             //$userRepo = $this->getDoctrine()->getRepository(UserRepository::class);
-            /*$_user = $userRepo->findAll();
+            /*
+            $_user = $userRepo->findAll();
             $adminUser = [];
             foreach ($_user as $user) {
                 $roles = $user->getRoles();
@@ -51,14 +52,14 @@ class AccueilController extends ApplicationController
                     $adminUser[] = $user;
                 }
             }
-            dump($adminUser);*/
-
+            dump($adminUser);
+            */
             return $this->render('accueil/home.html.twig', [
                 'hasError'   => $error !== null,
                 'username'   => $username,
                 'devicesNb'  => $this->getRepoDevice($repoDevices)['devicesNb'],
                 'devicesTab' => $this->getRepoDevice($repoDevices)['devicesTab'],
-                'security'   => $securityRepo->findOneBy(['id' => 1]),
+                'security'   => $securityRepo->findAll(),
             ]);
         } else {
             return $this->render('account/login.html.twig', [

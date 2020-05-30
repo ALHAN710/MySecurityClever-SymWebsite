@@ -16,7 +16,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 class SecurityAlarmController extends ApplicationController
 {
     /**
-     * @Route("/security/alarm", name="security_alarm", methods={"GET","POST"}, schemes={"https"})
+     * @Route("/security/alarm", name="security_alarm")
      * 
      */
     public function index(
@@ -27,35 +27,43 @@ class SecurityAlarmController extends ApplicationController
         SecuritySystemRepository $securitySystemRepo,
         MailerInterface $mailer,
         TexterInterface $texter
-    ) { // {modId<[a-zA-Z0-9]+>} 
+    ) { // {modId<[a-zA-Z0-9]+>}  , methods={"GET","POST"}, schemes={"http"}
 
-        return $this->json([
+        /*return $this->json([
             'code' => 200,
             //'received' => $paramJSON
 
-        ], 200);
+        ], 200);*/
         //Récupération et vérification des paramètres au format JSON contenu dans la requête
         $paramJSON = $this->getJSONRequest($request->getContent());
 
-        /*$devicesRepo        = $manager->getRepository(DevicesRepository::class);
+        /*
+        $devicesRepo        = $manager->getRepository(DevicesRepository::class);
         $userRepo           = $manager->getRepository(UserRepository::class);
-        $securitySystemRepo = $manager->getRepository(SecuritySystemRepository::class);*/
+        $securitySystemRepo = $manager->getRepository(SecuritySystemRepository::class);
+        */
 
         //Recherche du device dans la BDD
-        $modId  = $paramJSON['modId'];
+        $modId  = $paramJSON['moduleId'];
         $device = $devicesRepo->findOneBy(['moduleId' => $modId]);
 
-        dump($device);
+        //dump($device);
         $adminUser = [];
+        $tabIP     = [];
+        $tabResp   = [];
 
         if ($device != null) { // Test si le device existe dans notre BDD
             //1- On récupère l'état d'activation, le type d'alerte et le message de notification du device 
-            $deviceState  = $device->getActivation();
-            $notifMessage = $device->getNotificationMessage();
+            $deviceState        = $device->getActivation();
+            $notifMessage       = $device->getNotificationMessage();
             $deviceAlertType    = $device->getAlerte();
+
             //2- On récupère l'état d'activation du système de sécurity
-            $securitySystem = $securitySystemRepo->findBy(['id' => 1]);
-            $securitySystemState = $securitySystem[0]->getActivation();
+            $tabSecuritySystem   = $securitySystemRepo->findAll();
+            //dump($tabSecuritySystem);
+            //die();
+            $securitySystem      = $tabSecuritySystem[0];
+            $securitySystemState = $securitySystem->getActivation();
 
             //3-3 On récupère les numéro de téléphone et adresses mail des user de rôle ADMIN
             $_user = $userRepo->findAll();
@@ -69,7 +77,6 @@ class SecurityAlarmController extends ApplicationController
             //dump($adminUser);
             if ($paramJSON['detect'] == 1) {
                 $object = 'Alerte de sécurité';
-
                 if ($device->getType() == 'Sensor') { //Si le device est de type Sensor
 
                     //3- On vérifie si le système de sécurité et le device sont armés
@@ -87,7 +94,10 @@ class SecurityAlarmController extends ApplicationController
                                 $response = $this->forward('App\Controller\AlarmController::alarmSound', [
                                     'ipAddress'  => $ipAddress,
                                     'port'       => $port,
+                                    'on'         => 1
                                 ]);
+                                $tabResp[] = $response;
+                                $tabIP[]   = $ipAddress;
                             }
                         }
 
@@ -95,7 +105,7 @@ class SecurityAlarmController extends ApplicationController
                         if (!empty($notifMessage)) {
                             foreach ($adminUser as $user) {
                                 // Envoi de mail
-                                $this->sendEmail($mailer, $user->getEmail(), $object, $notifMessage);
+                                //$this->sendEmail($mailer, $user->getEmail(), $object, $notifMessage);
 
                                 // Envoi de SMS
                                 //$this->sendSMS($texter, $user->getFullPhone(), $notifMessage);
@@ -115,7 +125,7 @@ class SecurityAlarmController extends ApplicationController
                     if (!empty($notifMessage)) {
                         foreach ($adminUser as $user) {
                             // Envoi de mail
-                            $this->sendEmail($mailer, $user->getEmail(), $object, $notifMessage);
+                            //$this->sendEmail($mailer, $user->getEmail(), $object, $notifMessage);
 
                             // Envoi de SMS
                             //$this->sendSMS($texter, $user->getFullPhone(), $notifMessage);
@@ -126,14 +136,46 @@ class SecurityAlarmController extends ApplicationController
                 return $this->json([
                     'code'          => 200,
                     'Error message' => 'param is incorret',
-                    'received'      => $paramJSON
+                    'received'      => $paramJSON,
 
                 ], 200);
             }
-            return $this->render("security_alarm/security_alarm.html.twig", [
+            return $this->json([
+                'code'     => 200,
+                'received' => $paramJSON,
+                'tabIP'    => $tabIP,
+                'Response' => $tabResp
+
+            ], 200);
+            /*return $this->render("security_alarm/security_alarm.html.twig", [
                 'device' => $device,
                 'param'  => $paramJSON['detect']
-            ]);
+            ]);*/
+        } else if ($paramJSON['alarm'] == "stop") {
+            $alarmDevice = $devicesRepo->findBy(['type' => 'Alarm']);
+
+            // On envoie à chacune de ces adresses IP un message de retentissement ----
+            $port = 80;
+            foreach ($alarmDevice as $alarm) {
+                // code...
+                $ipAddress = $alarm->getIpaddress();
+                if (!empty($ipAddress)) {
+                    $response = $this->forward('App\Controller\AlarmController::alarmSound', [
+                        'ipAddress'  => $ipAddress,
+                        'port'       => $port,
+                        'on'         => 0
+                    ]);
+                    $tabResp[] = $response;
+                    $tabIP[]   = $ipAddress;
+                }
+            }
+            return $this->json([
+                'code'     => 200,
+                'received' => $paramJSON,
+                'tabIP'    => $tabIP,
+                'Response' => $tabResp
+
+            ], 200);
         }
         return $this->json([
             'code' => 403,
@@ -292,55 +334,5 @@ class SecurityAlarmController extends ApplicationController
             'received' => $paramJSON
 
         ], 403);
-    }
-
-    /**
-     * Gère les requêtes de connectivité des devices
-     * 
-     * @Route("/devices/connection", name="devices_connection")
-     *
-     * @return Request
-     */
-    public function devicesConnection(Request $request, EntityManagerInterface $manager)
-    {
-        //Récupération et vérification des paramètres au format JSON contenu dans la requête
-        $paramJSON = $this->getJSONRequest($request->getContent());
-
-        $modId   = $paramJSON['moduleId'];
-        $connect = $paramJSON['connect'] ? true : false;
-
-        $devicesRepo = $manager->getRepository(DevicesRepository::class);
-
-        //Recherche du device dans la BDD
-        $device = $devicesRepo->findOneBy(['moduleId' => $modId]);
-
-        dump($device);
-        if ($device != null) { // Test si le device existe dans notre BDD
-
-            if ($device->getConnectionState() == false) {
-                $device->setConnectionState(true);
-
-                $manager->persist($device);
-                $manager->flush();
-
-                //Mise à jour des interfaces des clients connectés par "websocket"
-
-
-                /*return $this->json([
-                    'code' => 200,
-                    'received' => $paramJSON
-    
-                ], 200);*/
-                return $this->render("security_alarm/security_alarm.html.twig", [
-                    'device' => $device
-                ]);
-            }
-        }
-        /*return $this->json([
-            'code' => 403,
-            'message' => "Device don't exist",
-            'received' => $paramJSON
-
-        ], 403);*/
     }
 }

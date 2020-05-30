@@ -253,7 +253,6 @@ class User implements UserInterface, \Serializable
      * UserInterface methods
      *
      */
-
     public function getRoles()
     {
 

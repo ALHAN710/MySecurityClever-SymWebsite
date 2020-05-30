@@ -11,9 +11,11 @@
         <li class="nav-item">
           <a class="nav-link {% if tabpanel == 0 %}active{% endif %}" data-toggle="tab" href="#userconfig" role="tab">User Configurations</a>
         </li>
+        {% if is_granted('ROLE_SUPER_ADMIN') == true %}
         <li class="nav-item">
           <a class="nav-link {% if tabpanel != 0 %}active{% endif %}" data-toggle="tab" href="#devicesconfig" role="tab">Devices Configurations</a>
         </li>
+        {% endif %}
         <!--
         <li class="nav-item">
           <a class="nav-link" data-toggle="tab" href="#password" role="tab">PASSWORD</a>
@@ -96,6 +98,7 @@
                   
                 {% for _user in pagination.data %}
                   {# {{ dump(_user) }} #}
+                  {% if _user.roles[0] != 'ROLE_SUPER_ADMIN' %}
                   <tr>
                       <td> {{ _user.fullName }} </td>
                       <td> {{ _user.roles[0] }} </td>
@@ -107,6 +110,7 @@
 
                       </td>
                   </tr>
+                  {% endif %}
                   
                 {% endfor %}
                 <tr>

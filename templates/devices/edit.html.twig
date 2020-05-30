@@ -58,6 +58,12 @@
                 {{ form_widget(form.streamingUrl, {'attr': {'class': "form-control custom-focus"}}) }}
               </div>
             </div>
+            <div class="form-group row {% if device.type != 'Alarm' %}d-none{% endif %}" id="Ipaddress">
+              {{ form_label(form.Ipaddress, null, {'label_attr': {'class': 'col-12 col-sm-3 col-form-label'}}) }}
+              <div class="col-12 col-sm-9">
+                {{ form_widget(form.Ipaddress, {'attr': {'class': "form-control custom-focus"}}) }}
+              </div>
+            </div>
             <div class="form-group row {% if device.type == 'Alarm' %}d-none{% endif %}" id="notificationMessage">
               {{ form_label(form.notificationMessage, null, {'label_attr': {'class': 'col-12 col-sm-3 col-form-label'}}) }}
               <div class="col-12 col-sm-9">
