@@ -2,24 +2,34 @@
 <html lang="en">
 	<head>
 		<meta charset="utf-8"/>
-		<title>My Security Clever</title>
+		<title>My Security Clever - User Authentification</title>
 		<meta name="viewport" content="width=device-width, initial-scale=1.0">
 		<meta content="A premium admin dashboard template by Mannatthemes" name="description"/>
 		<meta
 		content="Mannatthemes" name="author"/>
 
 		<!-- App favicon -->
-		<link
-		rel="shortcut icon" href="/images/favicon.ico">
+		<link rel="icon" type="image/ico" href="/images/logoCLETech.ico">
 
+		{#
 		<!-- App css -->
-		<link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 		<link href="/css/icons.css" rel="stylesheet" type="text/css"/>
 		<link href="/css/metisMenu.min.css" rel="stylesheet" type="text/css"/>
 		<link href="/css/style.css" rel="stylesheet" type="text/css"/>
+		#}
+
+		<link href="/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+		<!-- Bootstrap core CSS with custom theme variables -->
+		<link href="/css/bootstrap-custom.css" rel="stylesheet">
+
+		<!-- Font Awesome -->
+		<link rel="stylesheet" href="/font-awesome/css/font-awesome.min.css">
+
+		<!-- Additional styles for this template -->
+		<link href="/css/iot-theme.css" rel="stylesheet">
 
 	</head>
-
+	{#
 	<body
 		class="account-body accountbg">
 
@@ -123,4 +133,108 @@
 		<script src="/js/app.js"></script>
 
 	</body>
+	#}
+
+	<body class="pt-0">
+		<div id="login" class="d-flex align-items-center pb-4">
+			<div class="row mx-auto" style="width:100%;max-width:30rem;">
+				<div class="col-12 mb-2 text-center">
+					{#<img src="assets/images/symbiot4.svg" width="140" height="20" alt="SYMBIOT 4" class="mx-auto">
+					#}
+					<img src="/images/logoCLETech.svg" width="400" height="150" alt="CLETECH" class="mx-auto">
+				</div>
+				
+				<div class="col-12">
+					<!-- Login form START -->
+					<div class="card px-4 pt-2">
+					{% if hasError %}
+						{#<div class="alert alert-danger">An error has occurred, the username or password is invalid</div>#}
+						<div class="alert alert-danger alert-dismissible fade show" role="alert">
+							<button type="button" class="close" data-dismiss="alert" aria-label="Close">
+								<span aria-hidden="true"><i class="mdi mdi-close"></i></span>
+							</button>
+							<strong>An error has occurred, the username or password is invalid</strong> Change a few things up and try submitting again.
+						</div>
+					{% endif %} 
+					<form action="{{ path("account_login") }}" class="p-2" method="POST">
+						<div class="form-group row">
+							<label for="user-name" class="col-12 col-form-label">Username</label>
+							<div class="col-12">
+								<input class="form-control custom-focus" type="text" placeholder="Enter user Email" value="{{username}}" name="_username" id="user-name">
+							</div>
+						</div>
+						<div class="form-group row">
+							<label for="user-password" class="col-12 col-form-label">Password</label>
+							<div class="col-12">
+								<input class="form-control custom-focus" type="password" name="_password" id="password-field">
+							</div>
+						</div>
+						<div class="form-group row mt-4">
+							<div class="col-sm-12 col-lg-6 col-md-6 col-xs-12">
+								<span toggle="#password-field" class="fa fa-fw fa-eye-slash toggle-password mr-2"></span><span id="showPwd">Show</span> password
+							</div>
+							<!--end col-->
+							<div class="col-sm-12 col-lg-6 col-md-6 col-xs-12 text-right">
+								<a href="auth-recover-pw.html" class="text-muted font-13">
+									<i class="dripicons-lock"></i>
+									Forgot password?
+								</a>
+							</div>
+							<!--end col-->
+						</div>
+						<!--end form-group-->
+						<div class="form-group row">
+							<div class="col-12 mt-3 mb-2 text-center">
+								<button type="submit" class="btn btn-primary btn-block" id="LogInBtn">
+									<span class="spinner-border spinner-border-sm mr-1 d-none" role="status" aria-hidden="true"></span>
+                                    Log In <i class="fas fa-sign-in-alt ml-1"></i>
+								</button>
+							</div>
+						</div>
+
+					</form>
+					</div>
+					<!-- Login form END -->
+				</div>
+			</div>
+		</div>
+
+		<!-- Bootstrap core JavaScript
+			================================================== -->
+		<!-- Placed at the end of the document so the pages load faster -->
+		<!-- jQuery -->
+		{#
+		<script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+		#}
+		<script src="/js/jquery.min.js"></script>	
+		<script src="/js/jquery.slimscroll.min.js"></script>
+		<!-- Bootstrap bundle -->
+		<script src="/js/bootstrap.bundle.min.js"></script>
+
+		<script>
+            $(".toggle-password").click(function() {
+
+                $(this).toggleClass("fa-eye-slash fa-eye");
+                var input = $($(this).attr("toggle"));
+                if (input.attr("type") == "password") {
+                    input.attr("type", "text");
+                    $('#showPwd').html('Hide');
+                } else {
+                    input.attr("type", "password");
+                    $('#showPwd').html('Show');
+                }
+            });
+
+            
+            $('#LogInBtn').click(function(){
+                //block of code that runs when the click event triggers
+                $(this).children('i').addClass('d-none');
+                $(this).children('span').removeClass('d-none');
+                //$('#LogInBtn').prop('disabled', true);
+            });
+        </script>
+
+	</body>
+
+
 </html>

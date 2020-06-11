@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Symfony\Component\Mime\Email;
 use App\Repository\DevicesRepository;
+use App\Controller\ApplicationController;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\Notifier\TexterInterface;
 use Symfony\Component\Routing\Annotation\Route;
